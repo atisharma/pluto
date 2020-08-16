@@ -1,5 +1,7 @@
 """
 Some RGB tuples.
+
+A S Sharma 2020.
 """
 
 WHITE =     (255,   255,    255)
@@ -8,3 +10,6 @@ RED =       (255,   0,      0)
 GREEN =     (0,     255,    0)
 BLUE =      (0,     0,      255)
 AMBER =     (255,   100,    0)
+PURPLE =    (255,   20,     255)
+GRAY =      (110,   100,    80)
+GREY = GRAY

@@ -3,6 +3,8 @@ Update the PHAT with rendered text or cava data.
 The PHAT state is stored as a PIL image, with im[x, y] = (R, G, B).
 The image size is accessed as im.size = (w, h).
 Images can be superposed.
+
+A S Sharma 2020.
 """
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageChops, ImageEnhance
@@ -23,17 +25,18 @@ def blank():
     return image
 
 
+def clear():
+    """
+    Clear the display.
+    """
+    uh.clear()
+
+
 def brightness(b):
     """
     Set display brightness in [0, 1].
     """
     uh.brightness(b)
-
-
-def open(filename):
-    image = Image.open(filename)
-    image.thumbnail((uh.WIDTH, uh.HEIGHT), Image.ANTIALIAS)
-    return image.rotate(180)
 
 
 def text(text, font, height):
@@ -79,6 +82,13 @@ def add(image, overlay, dx=0, dy=0):
     return image
 
 
+def open(filename):
+    image = Image.open(filename)
+    image.thumbnail((uh.WIDTH, uh.HEIGHT), Image.ANTIALIAS)
+    image = add(blank(), image)
+    return image.rotate(180)
+
+
 def peak(image):
     """
     Return the peak brightness of all pixels.
@@ -94,7 +104,7 @@ def cycle(image, dx=1, dy=0):
     """
     Cycle (offset) an image pixel by pixel.
     """
-    yield ImageChops.offset(image, dx, dy)
+    return ImageChops.offset(image, dx, dy)
 
 
 def render(image):

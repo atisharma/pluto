@@ -1,5 +1,7 @@
 """
 Cava display colour schemes.
+
+A S Sharma 2020.
 """
 
 from colors import *

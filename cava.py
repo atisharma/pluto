@@ -2,7 +2,7 @@
 Read fifo socket for cava's raw output, and construct a virtual image to update
 the display with.
 
-A S Sharma 2020
+Copyright 2020 A S Sharma.
 """
 
 import select
@@ -47,23 +47,24 @@ def read_bars(stdin):
         bar_delimiter = 59
         frame_delimiter = 10
         ascii_max_range = 65535 # (1 less than MAX_BAR_HEIGHT)
-    Returns left heights, right heights, is_mute.
+    Returns left heights, right heights, is_playing.
     """
     # avoid blocking
     i, o, e = select.select( [stdin], [], [], 1.0 / 30.0)
     if i:
         ascii_bars = stdin.readline()
     else:
-        return [0] * 16, [0] * 16, True
+        return [0] * 16, [0] * 16, False
     try:
         heights = list(map(cleaner, ascii_bars.strip().split(';')[:-1]))
+        bars = len(heights)
+        left = [h for h in heights[0:bars // 2]]
+        right = [h for h in heights[bars:bars // 2 - 1:-1]]
+        is_playing = max(heights) > 2e-2
+        return left, right, is_playing
     except ValueError:
-        return [0] * 16, [0] * 16, True
-    bars = len(heights)
-    left = [h for h in heights[0:bars // 2]]
-    right = [h for h in heights[bars:bars // 2 - 1:-1]]
-    is_quiet = sum(heights) < 1e-4     # -80db
-    return left, right, is_quiet
+        # occasional glitch and also null input
+        return [0] * 16, [0] * 16, False
 
 
 def frame(left, right, scheme=schemes.rg):
