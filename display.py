@@ -5,7 +5,7 @@ The image size is accessed as im.size = (w, h).
 Images can be superposed.
 """
 
-from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageChops
+from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageChops, ImageEnhance
 import unicornhathd as uh
 
 
@@ -30,6 +30,12 @@ def brightness(b):
     uh.brightness(b)
 
 
+def open(filename):
+    image = Image.open(filename)
+    image.thumbnail((uh.WIDTH, uh.HEIGHT), Image.ANTIALIAS)
+    return image.rotate(180)
+
+
 def text(text, font, height):
     """
     Render text to an image in a given font.
@@ -45,9 +51,7 @@ def text(text, font, height):
     offset = ((width - text_width) // 2, (height - text_height) // 2 - 1)
     bg = "#000000"
     draw.text(offset, text, font=pil_font, fill=bg)
-    image = image.transpose(Image.FLIP_LEFT_RIGHT)
-    image = image.transpose(Image.FLIP_TOP_BOTTOM)
-    return ImageOps.invert(image)
+    return ImageOps.invert(image.rotate(180))
 
 
 def tint(image, color):
@@ -84,6 +88,13 @@ def peak(image):
     glow, ghigh = g.getextrema()
     blow, bhigh = b.getextrema()
     return max(rhigh, ghigh, bhigh)
+
+
+def cycle(image, dx=1, dy=0):
+    """
+    Cycle (offset) an image pixel by pixel.
+    """
+    yield ImageChops.offset(image, dx, dy)
 
 
 def render(image):
