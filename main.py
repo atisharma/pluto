@@ -1,14 +1,10 @@
 """
 Put together all the display elements and render to the display.
 
-TODO: cava binary pipe
-TODO: check font licence
-TODO: scrolling LMS text?
-TODO: kid's pixel art
-
-A S Sharma 2020.
+Copyright 2020 A S Sharma.
 """
 
+import os
 from time import time
 from datetime import datetime
 from time import sleep
@@ -22,6 +18,9 @@ import cava
 import schemes
 import clock
 from colors import *
+
+
+CWD = os.path.dirname(os.path.realpath(__file__))
 
 
 SCHEMES = cycle([
@@ -43,7 +42,9 @@ def configure():
     Load the configuration options.
     """
     config = configparser.ConfigParser()
-    config.read("cava.config")
+    config_file = f"{CWD}/cava.config"
+    #print("Using", config_file)
+    config.read(config_file)
     clock_font = config["pluto"].get("clock_font", "fonts/pf_tempesta_seven_compressed.ttf")
     clock_size = config["pluto"].getint("clock_size", 8)
     configuration = {
@@ -82,16 +83,19 @@ def splash_screen(cfg):
 if __name__ == "__main__":
 
     cfg = configure()
+    print("config")
+    print(cfg)
     f = display.blank()
     timers = [0] * 5
 
     # ---- WELCOME SCREEN ---- #
+    print("Welcome")
     if cfg["splash_screen"]:
         splash_screen(cfg)
 
     welcome_image = welcome(cfg)
     t0 = time()
-    while time() < t0 + 10:
+    while time() < t0 + 5:
         t = time()
         if t - timers[4] >= 1.0 / cfg["scroll_speed"]:
             timers[4] = t
@@ -105,6 +109,7 @@ if __name__ == "__main__":
     c = display.blank()
     blank = display.blank()
     cava_ps = cava.start()
+    print(cava_ps)
 
     while True:
         t = time()

@@ -1,7 +1,7 @@
 """
 Return an image of the current time.
 
-A S Sharma 2020.
+Copyright 2020 A S Sharma.
 """
 
 from datetime import datetime

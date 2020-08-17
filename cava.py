@@ -8,6 +8,7 @@ Copyright 2020 A S Sharma.
 import select
 import subprocess
 import signal
+import os
 
 from display import blank, Image
 import schemes
@@ -20,7 +21,10 @@ def start():
     """
     Start the cava subprocess.
     """
-    cava_ps = subprocess.Popen(['cava'], stdout=subprocess.PIPE, text=True)
+    cwd = os.path.dirname(os.path.realpath(__file__))
+    config_file = f"{cwd}/cava.config"
+    print("Starting cava with", config_file)
+    cava_ps = subprocess.Popen(f"/usr/local/bin/cava -p {config_file}", shell=True, stdout=subprocess.PIPE, text=True, cwd=cwd)
     return cava_ps
 
 

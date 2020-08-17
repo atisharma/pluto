@@ -1,7 +1,7 @@
 """
 Some RGB tuples.
 
-A S Sharma 2020.
+Copyright 2020 A S Sharma.
 """
 
 WHITE =     (255,   255,    255)

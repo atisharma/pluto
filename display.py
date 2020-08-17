@@ -4,7 +4,7 @@ The PHAT state is stored as a PIL image, with im[x, y] = (R, G, B).
 The image size is accessed as im.size = (w, h).
 Images can be superposed.
 
-A S Sharma 2020.
+Copyright 2020 A S Sharma.
 """
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageChops, ImageEnhance
